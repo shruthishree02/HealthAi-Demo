@@ -1,0 +1,43 @@
+/* MainContent.css */
+.right-section {
+    background-image: url('../assets/background.png');
+    background-size: cover;
+    background-position: center;
+    flex-grow: 1;
+    padding: 20px;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: small;
+    height: 100vh;
+    
+  }
+
+  .summary-box:hover {
+    transform: scale(1.02); /* Slightly increase the size */
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2); /* Add a shadow for a "pop" effect */
+  }
+  
+  .summary-box {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 7px;
+    border-radius: 8px;
+    border: 2px dashed #60a5fa; /* Yellow dashed border */
+    transition: transform 0.3s ease, box-shadow 0.2s ease;
+    margin-left: 10px;
+    margin-top: 20px;
+  }
+
+  .summary-box h3 {
+  color: #60a5fa;
+  font-family: 'Courier New', Courier, monospace;
+  margin-left: 20px;
+  }
+
+  .summary-box p{
+    margin-left: 20px;
+  }
+  
+  body {
+    overflow: hidden;
+  }
+  
