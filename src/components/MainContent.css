@@ -24,7 +24,7 @@
     border: 2px dashed #60a5fa; /* Yellow dashed border */
     transition: transform 0.3s ease, box-shadow 0.2s ease;
     margin-left: 10px;
-    margin-top: 20px;
+    margin-top: 50px;
   }
 
   .summary-box h3 {
