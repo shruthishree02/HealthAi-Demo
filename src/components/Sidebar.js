@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import RiveComponent from "@rive-app/react-canvas";
 import logoAnim from "../assets/logo_anim.riv";
+
 import "./Sidebar.css";
 
-function Sidebar() {
+function Sidebar({ graphqlQuery, onGenerate }) {
   const [query, setQuery] = useState(""); // State for Natural Language Query
-  const [graphqlQuery, setGraphqlQuery] = useState(""); // State for GraphQL query
   const [generatedQuery, setGeneratedQuery] = useState(""); // State for Generated GraphQL content
 
   useEffect(() => {
@@ -21,44 +21,86 @@ function Sidebar() {
     }
   };
 
-  // Function to handle suggestion clicks (pre-fills the natural language query box)
-  const handleSuggestionClick = (text, generatedContent) => {
+  // Function to handle suggestion clicks
+  const handleSuggestionClick = (text) => {
     setQuery(text); // Update the natural language query box
-    setGeneratedQuery(generatedContent); // Store the content to be used when "Generate" is clicked
+    const tempGeneratedQuery = `{
+      Get {
+        Healthsearch_Product(
+          limit: 5
+          hybrid: { query: "${text}" }
+        ) {
+          ingredients
+          description
+          summary
+          _additional {
+            generate(
+              groupedResult: { task: "Summarize products based on this query: ${text}" }
+            ) {
+              groupedResult
+              error
+            }
+            id
+            distance
+          }
+        }
+      }
+    }`;
+    setGeneratedQuery(tempGeneratedQuery); // Pre-generate the GraphQL query but don't pass it to the parent
   };
 
   // Function to handle Generate button click
   const handleGenerateClick = () => {
-    setGraphqlQuery(generatedQuery); // Display the generated content in the GraphQL query box
+    let response = "";
+
+    // Set the response based on the selected query
+    if (query === "Products for sleep from the Now Foods brand") {
+      response = "🛰️ RETRIEVED FROM CACHE: Now Foods offers a range of products for sleep, including Melatonin capsules in various strengths and forms. These products are designed to help regulate sleep/wake cycles, promote relaxation, and support overall sleep quality. In addition, Now Foods also offers Inositol Powder, which can help quiet the mind and eliminate racing thoughts to improve sleep. GABA tablets are also available to promote relaxation and ease nervous tension, potentially benefiting those with anxiety or sleep issues. Overall, Now Foods products for sleep aim to provide natural support for a restful night's sleep.";
+    } else if (query === "Helpful for joint pain") {
+      response = "🛰️ RETRIEVED FROM CACHE: 1. Solgar Resveratrol, 250 mg, 60 Softgels: This product contains resveratrol, a natural polyphenol with powerful antioxidant properties that help fight cell-damaging free radicals. It has been reported to have positive effects on joint pain. 2. Nature's Bounty Ginger Root, 550 mg, 100 Capsules: This product supports digestive health and helps with occasional motion sickness. It has been reported to have positive effects on joint pain and digestion. 3. Gaia Herbs TurmericBoost, Uplift, 5.29 oz (150 g): This turmeric product supports a joyful outlook on life and promotes a healthy inflammatory response. It has been reported to have positive effects on joint pain. 4. Doctor's Best Glucosamine Chondroitin MSM with OptiMSM, 120 Veggie Caps: This product provides nutrients that support healthy joints and connective tissues. It has been highly recommended for its health benefits, especially for joint pain relief. 5. Nature's Plus Advanced Therapeutics Glucosamine Chondroitin MSM Ultra Rx-Joint Cream, 4 fl oz (118 ml): This topical formula combines glucosamine, chondroitin, and MSM for maximum benefits. It has been reported to have positive effects on muscle pain, arthritis, and joint discomfort.";
+    } else if ( query === "Best rated product for energy") { 
+      response = "🛰️ RETRIEVED FROM CACHE: Based on the query for the best rated product for energy, the following products were summarized: 1. Solaray Once Daily High Energy, Multi-Vita-Min, Iron Free, 120 Capsules: Formulated with two-stage, timed-release technology containing Vitamin C, Thiamine, Riboflavin, Niacinamide, and Vitamin B-6. Customers reported that the vitamins provided much needed energy at an excellent price. 2. 21st Century Sentry Senior, Multivitamin & Multimineral Supplement, Adults 50+, 125 Tablets: A balanced formula for active adults 50+ with complete antioxidant support. Users experienced great energy and increased productivity after taking these vitamins. 3. Quality of Life Labs CoQ10-SR, 100 mg, 30 Vegicaps: Contains MicroActive CoQ10 for sustained release over 24 hours and enhanced absorption. Users felt an increase in energy and found it to be the best Q10 supplement available. 4. Guayaki Organic Yerba Mate Shot, Lime Tangerine, 2 fl oz (59 ml): A high energy infusion made from Yerba Mate and other natural ingredients. Provides sustained and balanced energy without frequent restroom breaks, although some users had negative experiences with purchasing from iHerb.com." ;
+    }
+
+    // Call the onGenerate function with the generated query and response
+    onGenerate(generatedQuery, response);
   };
+
+    // Function to copy the response to clipboard
+    const copyToClipboard = () => {
+      navigator.clipboard.writeText(graphqlQuery).then(() => {
+        alert("Response copied to clipboard!"); // Optional: Show a success message
+      }).catch(err => {
+        console.error("Failed to copy: ", err);
+      });
+    };
 
   useEffect(() => {
     const graphqlTextarea = document.querySelector(".graphql .query-textarea");
     autoResize(graphqlTextarea);
-  }, [graphqlQuery]); // Resize when the GraphQL query content changes
+  }, [graphqlQuery]);
 
+ 
   return (
     <div className="left-section">
       <div className="logo-container">
         <RiveComponent src={logoAnim} className="logo-animation" />
       </div>
-
       <h1 className="title">
         <span className="brand"></span>
       </h1>
       <p className="description">
         Welcome to HealthSearch! Convert natural language to a GraphQL query to
-        search for supplements with specific health effects based on user-written
-        reviews. The demo uses generative search to further enhance the results by
-        providing product and review summaries.
+        search for supplements with specific health effects based on
+        user-written reviews. The demo uses generative search to further enhance
+        the results by providing product and review summaries.
       </p>
       <p className="disclaimer">
         HealthSearch is NOT intended to give any health advice, all results are
         purely based on user-written reviews. HealthSearch is a technical
-        demonstration and presents a proof of concept for one of many possible use
-        cases for Weaviate.
+        demonstration and presents a proof of concept for one of many possible
+        use cases for Weaviate.
       </p>
-
       <div className="icons">
         <div className="icon weaviate-icon" />
         <div className="icon github-icon" />
@@ -77,206 +119,25 @@ function Sidebar() {
           readOnly
         />
         <div className="suggestions">
-          <button
-            onClick={() =>
-              handleSuggestionClick(
-                "Helpful for joint pain",
-                `{
-  Get {
-    Healthsearch_Product(
-    autocut: 3
-      hybrid: {query: "Helpful for joint pain"}
-    ) {
-      name
-      brand
-      ingredients
-      reviews
-      image
-      rating
-      description
-      summary
-      effects
-      _additional {
-        id
-        score
-      }
-    }
-  }
-}
-
-# Query with generative module 
-
-{
-  Get {
-    Healthsearch_Product(
-    limit: 5
-      hybrid: {query: "Helpful for joint pain"}
-    ) {
-      ingredients
-      description
-      summary
-      
-      _additional {
-        generate(
-          groupedResult: {
-            task: "Summarize products based on this query: helpful for joint pain"
-          }
-        ) {
-          groupedResult
-          error
-        }
-        id
-        distance
-      }
-    }
-  }
-}`
-              )
-            }
-          >
+          <button onClick={() => handleSuggestionClick("Helpful for joint pain")}>
             Helpful for joint pain
           </button>
           <button
             onClick={() =>
               handleSuggestionClick(
-                "Products for sleep from the Now Foods brand",
-                `{
-  Get {
-    Healthsearch_Product(
-    autocut: 3
-      hybrid: {query: "sleep"}
-      where: {
-        path: ["brand"],
-        operator: Equal,
-        valueString: "Now Foods"
-      }
-    ) {
-      name
-      brand
-      ingredients
-      reviews
-      image
-      rating
-      description
-      summary
-      effects
-      _additional {
-        id
-        score
-      }
-    }
-  }
-}
-
-# Query with generative module 
-
-{
-  Get {
-    Healthsearch_Product(
-    limit: 5
-      hybrid: {query: "sleep"}
-      where: {
-        path: ["brand"],
-        operator: Equal,
-        valueString: "Now Foods"
-      }
-    ) {
-      brand
-      ingredients
-      description
-      summary
-      
-      _additional {
-        generate(
-          groupedResult: {
-            task: "Summarize products based on this query: products for sleep from the now foods brand"
-          }
-        ) {
-          groupedResult
-          error
-        }
-        id
-        distance
-      }
-    }
-  }
-}`
+                "Products for sleep from the Now Foods brand"
               )
             }
           >
             Products for sleep from the Now Foods brand
           </button>
           <button
-            onClick={() =>
-              handleSuggestionClick(
-                "Best rated product for energy",
-                `{
-  Get {
-    Healthsearch_Product(
-      autocut: 3
-      nearText: {concepts: ["energy"]}
-      sort: [{
-        path: ["rating"],
-        order: desc
-      }]
-    ) {
-      name
-      brand
-      ingredients
-      reviews
-      image
-      rating
-      description
-      summary
-      effects
-      _additional {
-        id
-        score
-      }
-    }
-  }
-}
-
-# Query with generative module 
-
-{
-  Get {
-    Healthsearch_Product(
-      limit: 5
-      nearText: {concepts: ["energy"]}
-      sort: [{
-        path: ["rating"],
-        order: desc
-      }]
-    ) {
-      ingredients
-      rating
-      description
-      summary
-      
-      _additional {
-        generate(
-          groupedResult: {
-            task: "Summarize products based on this query: best rated product for energy"
-          }
-        ) {
-          groupedResult
-          error
-        }
-        id
-        distance
-      }
-    }
-  }
-}`
-              )
-            }
+            onClick={() => handleSuggestionClick("Best rated product for energy")}
           >
             Best rated product for energy
           </button>
         </div>
         <div className="actions">
-          <p className="saved-queries">Saved queries: 1</p>
           <button className="generate-button" onClick={handleGenerateClick}>
             Generate
           </button>
@@ -293,13 +154,14 @@ function Sidebar() {
           className="query-textarea"
           value={graphqlQuery} // Displays the GraphQL query
           readOnly
-          placeholder=""
+          placeholder="Generated GraphQL query will appear here"
         />
         <div className="actions">
-          <button className="copy-button">📋 Copy to clipboard</button>
+        <button className="copy-button" onClick={copyToClipboard}>
+          📋 Copy Summary to Clipboard
+        </button>
         </div>
       </div>
-
       <p className="total-requests">Total Requests: 98</p>
     </div>
   );

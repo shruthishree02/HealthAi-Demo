@@ -33,11 +33,35 @@
   margin-left: 20px;
   }
 
+  .query-textarea{
+    align-items: center;
+  }
+
   .summary-box p{
     margin-left: 20px;
   }
   
   body {
     overflow: hidden;
+  }
+  
+  .response-textarea {
+    font-family: monospace;
+    width: 95%;
+   margin-left: 20px;
+    background: #0a0e22;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    min-height: 50px; /* Minimum height for the box */
+    max-height: 500px; /* Optional: Set a max height if needed */
+    /* resize: none; Disable manual resizing */
+     overflow: hidden;
+    /* position: relative; */
+    overflow-y: auto;
+    white-space: pre-wrap;
   }
   
