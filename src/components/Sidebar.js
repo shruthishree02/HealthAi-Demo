@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import RiveComponent from "@rive-app/react-canvas";
 import logoAnim from "../assets/logo_anim.riv";
-
+import { toast } from "react-toastify"; // Import toast
 import "./Sidebar.css";
 
 function Sidebar({ graphqlQuery, onGenerate }) {
@@ -69,9 +69,14 @@ function Sidebar({ graphqlQuery, onGenerate }) {
     // Function to copy the response to clipboard
     const copyToClipboard = () => {
       navigator.clipboard.writeText(graphqlQuery).then(() => {
-        alert("Response copied to clipboard!"); // Optional: Show a success message
+        toast.success("Response copied to clipboard!", {
+          className: 'custom-toast-success' // Apply custom success class
+        });
       }).catch(err => {
         console.error("Failed to copy: ", err);
+        toast.error("Failed to copy response.", {
+          className: 'custom-toast-error' // Apply custom error class
+        });
       });
     };
 

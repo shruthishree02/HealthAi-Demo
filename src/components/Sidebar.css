@@ -294,6 +294,17 @@
   background-color: #090909; /* Light color for the track */
 }
 
+/* ToastStyles.css */
+.custom-toast-success {
+  background-color: #1b1f36 !important; /* Green background */
+  color: #22c55e !important; /* White text */
+}
+
+.custom-toast-error {
+  background-color: #1b1f36 !important; /* Red background */
+  color: #ea36368e !important; /* White text */
+}
+
   
 
 

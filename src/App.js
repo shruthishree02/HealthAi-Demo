@@ -36,7 +36,7 @@ function App() {
       
       {/* Toast Container for notifications */}
       <ToastContainer />
-      
+
     </div>
     
   );
