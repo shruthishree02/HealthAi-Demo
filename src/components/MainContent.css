@@ -64,4 +64,17 @@
     overflow-y: auto;
     white-space: pre-wrap;
   }
+
+  .suggestion-box {
+    background-color: #1a1a2e;
+    color: #00ff99;
+    padding: 10px;
+  margin-left: 15px;
+    margin-top: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+    box-shadow: 0 0 5px rgba(0, 255, 153, 0.5);
+  }
+  
   

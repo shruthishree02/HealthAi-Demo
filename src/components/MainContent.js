@@ -48,6 +48,37 @@ function MainContent({ query, response }) {
           style={{ height: "auto" }} // Ensure it can resize
         />
       </div>
+
+        {/* Suggestion Box - Display only when there's a response */}
+    {response && (
+      <div className="suggestion-box">
+        <span>💡 Suggestion:</span> If this summary isn't accurate, try refining the query for better results.
+      </div>
+    )}
+
+          {/* Suggested Product Section */}
+          {/* <div className="suggested-product">
+        <h3>🔍 Suggested Product Based on Your Query</h3>
+        <div className="product-card">
+          <img
+            src="https://example.com/sample-image.jpg"
+            alt="Suggested Product"
+            className="product-image"
+          />
+          <div className="product-info">
+            <h4 className="product-title">Doctor's Best</h4>
+            <p className="product-name">
+              Glucosamine Chondroitin MSM with OptiMSM, 120 Veggie Caps
+            </p>
+            <div className="rating">⭐⭐⭐⭐⭐ (68 reviews)</div>
+            <p className="product-summary">
+              This product is highly recommended for its health benefits...
+            </p>
+          </div>
+        </div>
+      </div> */}
+
+
     </div>
   );
 }
