@@ -4,12 +4,17 @@
     background-size: cover;
     background-position: center;
     flex-grow: 1;
-    padding: 20px;
+    padding: 30px;
+    /* padding-bottom: 200px; */
     color: white;
     font-family: 'Courier New', Courier, monospace;
     font-size: small;
-    height: 100vh;
-    
+    height: 97.3vh;
+    overflow-y: auto;
+    /* padding: auto; */
+    max-height: 120%;
+    margin-top: -30px;
+   
   }
 
   .summary-box:hover {
@@ -44,6 +49,20 @@
   body {
     overflow: hidden;
   }
+
+    /* For Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 10px; /* Thin scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 150, 150, 0.272); /* Black color for the scrollbar thumb */
+  /* border-radius: 10px; Optional: round edges for the thumb */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #090909; /* Light color for the track */
+}
   
   .response-textarea {
     font-family: monospace;
@@ -76,5 +95,64 @@
     text-align: center;
     box-shadow: 0 0 5px rgba(0, 255, 153, 0.5);
   }
+
+  .suggested-products-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    gap: 90px; /* Space between products */
+    justify-content: center; /* Center products */
+    margin-bottom: -20px;
+  }
   
+  .product-card {
+    width: 250px; /* Set a fixed width for consistency */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    text-align: center;
+    /* background-color: #0a0e22; */
+    font-family: 'Times New Roman', Times, serif;
+    background: rgba(0, 0, 0, 0.7);
+  }
   
+  .product-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    margin-bottom: 10px;
+  }
+  
+  .product-image {
+    width: 60%; /* Adjust image size */
+    height: auto;
+    object-fit: contain;
+  }
+
+  .summary-textarea{
+    background: rgba(0, 0, 0, 0.5);
+    padding: 15px;
+    height: 70%;
+    width: 100%;
+    text-align: left;
+    border-radius: 8px;
+    border: 2px dashed #60a5fa Yellow dashed border;
+    transition: transform 0.3s ease, box-shadow 0.2s ease;
+    color: white;
+    margin: 0;
+    resize: none; /* Prevent manual resizing */
+    overflow-y: auto;
+    line-height: 1.4; /* Improve text readability */
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+    
+  }
+  
+  .product-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    border-color: #00ff99;
+}
+ 
+
+

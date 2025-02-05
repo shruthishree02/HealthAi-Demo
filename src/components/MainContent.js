@@ -16,7 +16,7 @@ function MainContent({ query, response }) {
         } else {
           clearInterval(interval);
         }
-      }, 50); // Adjust the speed of letter display here
+      }, 30); // Adjust the speed of letter display here
       return () => clearInterval(interval); // Cleanup on unmount
     }
   }, [response]);
@@ -34,6 +34,34 @@ function MainContent({ query, response }) {
     autoResize();
   }, [displayedResponse]);
 
+  const suggestedProducts = [
+    {
+      title: "Doctor's Best",
+      name: "Glucosamine Chondroitin MSM with OptiMSM, 120 Veggie Caps",
+      image: require("../assets/JPp1.png"),
+      rating: "⭐⭐⭐⭐⭐",
+      reviews: 68,
+     summary: "This product is highly recommended for its health benefits. It keeps the aches and problems away, especially for joints. Users have reported feeling much better and experiencing less pain after taking this product regularly. It works wonders for arthritis and osteo in the neck. The FDA even recommends this product for its effectiveness. Overall, it is a great product for improving joint health and providing relief from pain. Highly recommended for those with aching knees or arthrosis of the lower extremities."
+    },
+    {
+      title: "Badger Company",
+      name: "Sore Joint Rub, Arnica Blend, 2 oz (56 g)",
+      image: require("../assets/JPp2.png"),
+      rating: "⭐⭐⭐⭐",
+      reviews: 21,
+      summary: "This product is highly recommended for mild joint pains. It helps the muscles recover faster and decreases pain. The natural oils in this product work with your body to promote recovery. However, the arnica content may not be very high. It is not suitable for sensitive skin as it has a strong scent and takes a long time to absorb. The packaging is cute and handy. This balm is effective for sore and aching muscles, including arthritic pain. Overall, customers are happy with this product and find it beneficial for their health."
+    },
+    {
+      title: "Nature's Plus",
+      name: "Advanced Therapeutics, Glucosamine Chondroitin MSM, Ultra Rx-Joint Cream, 4 fl oz (118 ml)",
+      image: require("../assets/JPp3.png"),
+      rating: "⭐⭐⭐⭐",
+      reviews: 19,
+      summary: "This joint cream is very effective and does not cause any itching. My mother and I both found relief from knee pain after using it. I even recommended it to my mother's friend and sister, who also found it to be helpful. It works well for joint pain and has a pleasant scent. However, some people with allergies may not be able to use it on their face. Overall, it is a great product for relieving pain and has become a staple in my family for arthritis and muscle pain. Unfortunately, it did not provide any relief for various knee conditions as promised. Despite this setback, I highly recommend it for general joint pain and arthritis."
+    }
+  ];
+
+
   return (
     <div className="right-section">
       {/* Displaying GraphQL Query */}
@@ -43,7 +71,7 @@ function MainContent({ query, response }) {
           value={displayedResponse} // Use displayedResponse for letter-by-letter effect
           readOnly
           className="response-textarea"
-          placeholder="Generated product summary will appear here"
+          placeholder="Welcome to Healthsearch!"
           ref={textareaRef} // Reference for auto-resizing
           style={{ height: "auto" }} // Ensure it can resize
         />
@@ -56,27 +84,23 @@ function MainContent({ query, response }) {
       </div>
     )}
 
-          {/* Suggested Product Section */}
-          {/* <div className="suggested-product">
-        <h3>🔍 Suggested Product Based on Your Query</h3>
-        <div className="product-card">
-          <img
-            src="https://example.com/sample-image.jpg"
-            alt="Suggested Product"
-            className="product-image"
-          />
-          <div className="product-info">
-            <h4 className="product-title">Doctor's Best</h4>
-            <p className="product-name">
-              Glucosamine Chondroitin MSM with OptiMSM, 120 Veggie Caps
-            </p>
-            <div className="rating">⭐⭐⭐⭐⭐ (68 reviews)</div>
-            <p className="product-summary">
-              This product is highly recommended for its health benefits...
-            </p>
+        {/* Suggested Products Section */}
+      <div className="suggested-products-container">
+        {suggestedProducts.map((product, index) => (
+          <div key={index} className="product-card">
+            <h4 className="product-title">{product.title}</h4>
+            <p className="product-name">{product.name}</p>
+            <div className="product-image-container">
+              <img src={product.image} alt={product.name} className="product-image" />
+            </div>
+            <div className="rating">{product.rating} ({product.reviews} reviews)</div>
+            <div className="product-summary">
+              <p><strong>Generated Review Summary:</strong></p>
+              <textarea readOnly className='summary-textarea' value={product.summary}></textarea>
+            </div>
           </div>
-        </div>
-      </div> */}
+        ))}
+      </div>
 
 
     </div>
