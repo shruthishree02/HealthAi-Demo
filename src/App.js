@@ -1,45 +1,87 @@
 import React, { useState } from "react";
-import Sidebar from "./components/Sidebar"; // Import Sidebar component
-import MainContent from "./components/MainContent"; // Import MainContent component
-import Popup from "./components/Popup"; // Import Popup component
-import "./App.css"; // Import the global CSS
-import { ToastContainer } from "react-toastify"; // Import ToastContainer
-import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
+import Sidebar from "./components/Sidebar";
+import MainContent from "./components/MainContent";
+import Popup from "./components/Popup";
+import "./App.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const productOptions = {
+  "Helpful for joint pain": [
+    { name: "Awesome Product 1", image: "product1.jpg", rating: 4.5, reviews: 150, summary: "This is an amazing product that will help you achieve your goals." },
+    { name: "Awesome Product 2", image: "product2.jpg", rating: 4.7, reviews: 200, summary: "Highly recommended for its quality and effectiveness." },
+    { name: "Awesome Product 3", image: "product3.jpg", rating: 4.2, reviews: 120, summary: "Great quality at an affordable price." },
+  ],
+  "Products for sleep from the Now Foods brand": [
+    { name: "Awesome Product 4", image: "product4.jpg", rating: 4.8, reviews: 300, summary: "Highly rated with exceptional reviews." },
+    { name: "Awesome Product 5", image: "product5.jpg", rating: 4.6, reviews: 250, summary: "A must-have for daily use." },
+  ],
+  "Best rated product for energy": [
+    { name: "Awesome Product 6", image: "product6.jpg", rating: 4.1, reviews: 100, summary: "Great choice for durability and efficiency." },
+    { name: "Awesome Product 7", image: "product7.jpg", rating: 4.4, reviews: 180, summary: "Well-balanced product with solid features." },
+  ],
+};
 
 function App() {
-  const [graphqlQuery, setGraphqlQuery] = useState(""); // State for GraphQL query
-  const [response, setResponse] = useState(""); // State for generated response
-  const [showPopup, setShowPopup] = useState(true); // State to handle the visibility of the popup
+  const [graphqlQuery, setGraphqlQuery] = useState("");
+  const [response, setResponse] = useState("");
+  const [showPopup, setShowPopup] = useState(true);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [query, setQuery] = useState("");
+  const [selectedProducts, setSelectedProducts] = useState([]);
 
-  // Function to handle the generated GraphQL query and response from Sidebar
+  const [selectedSuggestion, setSelectedSuggestion] = useState("");
+  const [displayProducts, setDisplayProducts] = useState([]);
+
   const handleGenerate = (generatedQuery, generatedResponse) => {
-    setGraphqlQuery(generatedQuery); // Update the GraphQL query state
-    setResponse(generatedResponse); // Update the response state
+    setGraphqlQuery(generatedQuery);
+    setResponse(generatedResponse);
   };
 
-  // Function to close the popup
   const handleClosePopup = () => {
-    setShowPopup(false); // Set the popup visibility to false
+    setShowPopup(false);
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setSelectedSuggestion(suggestion);
+  };
+
+  const handleGenerateClick = () => {
+    if (selectedSuggestion) {
+      setDisplayProducts(productOptions[selectedSuggestion]);
+    }
+  };
+
+  // Pass the function onSelectOption to Sidebar here
+  const handleSelectOption = (products) => {
+    setSelectedProducts(products);
   };
 
   return (
     <div className="app-container" style={{ display: "flex" }}>
-      {/* Render the popup if showPopup is true */}
       {showPopup && <Popup onClose={handleClosePopup} />}
 
-      {/* Left Section (Sidebar) */}
-      <Sidebar graphqlQuery={graphqlQuery} onGenerate={handleGenerate} response={response} />
+      <Sidebar
+        graphqlQuery={graphqlQuery}
+        onGenerate={handleGenerate}
+        response={response}
+        onSelectOption={handleSelectOption} // Make sure it's passed
+        onSuggestionClick={handleSuggestionClick}
+        onGenerateClick={handleGenerateClick}
+      />
 
-      {/* Right Section (Main Content) */}
-      <MainContent query={graphqlQuery} response={response} />
+      <MainContent
+        query={graphqlQuery}
+        response={response}
+        selectedOption={selectedOption}
+        products={displayProducts} // Correct usage of `products`
+        selectedProducts={displayProducts} // Correct usage of `selectedProducts`
+      />
 
-      
-      {/* Toast Container for notifications */}
       <ToastContainer />
-
     </div>
-    
   );
 }
 
 export default App;
+
