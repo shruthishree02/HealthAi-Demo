@@ -57,10 +57,18 @@ function MainContent({ query, response, selectedOption, products }) {
   <div className="product-list">
         {products.length > 0 && products.map((product, index) => (
           <div key={index} className="product-card">
-            <img src={product.image} alt={product.name} />
-            <h3>{product.name}</h3>
+            <img src={product.image} alt={product.name} className="product-image"/>
+            <div className="product-info">
+                <h4>{product.name}</h4>
             <p>{product.summary}</p>
-            <p>⭐ {product.rating} ({product.reviews} reviews)</p>
+            <textarea 
+                  value={product.intel}
+                  readOnly
+                  className="summary-textarea"
+                />
+              
+            <p>⭐⭐⭐⭐⭐ {product.rating} ({product.reviews} reviews)</p>
+            </div>
           </div>
         ))}
       </div>
