@@ -312,6 +312,40 @@
   color: #ea36368e !important; /* White text */
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+  .left-section {
+    width: 100%;
+    max-width: none;
+    position: relative;
+  }
+
+  .suggestions {
+    flex-direction: column;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .generate-button,
+  .copy-button {
+    width: 100%;
+    margin-top: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .query-textarea {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .suggestions button {
+    font-size: 12px;
+    padding: 8px;
+  }
+}
   
 
 

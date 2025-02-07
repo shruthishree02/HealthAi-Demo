@@ -117,9 +117,14 @@ function Sidebar({ graphqlQuery, onGenerate, response, onSuggestionClick, onSele
         use cases for Weaviate.
       </p>
       <div className="icons">
-        <div className="icon weaviate-icon" />
-        <div className="icon github-icon" />
-      </div>
+  <a href="https://weaviate.io/" target="_blank" rel="noopener noreferrer">
+    <div className="icon weaviate-icon" />
+  </a>
+  <a href="https://github.com/shruthishree02/HealthAi-Demo" target="_blank" rel="noopener noreferrer">
+    <div className="icon github-icon" />
+  </a>
+</div>
+
 
       {/* Natural Language Query Box */}
       <div className="query-box natural-language">
